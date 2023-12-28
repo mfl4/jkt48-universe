@@ -4,7 +4,7 @@
     <h1 class="font-black bg-red-500 text-white p-3 rounded">Member Management</h1>
     <hr class="my-4">
 
-    <section>
+    <section class="mb-5">
         <a href="/dashboard/members/create"
             class="p-2 border border-emerald-500 bg-white text-emerald-500 rounded hover:text-white hover:bg-emerald-500"><i
                 class="fas fa-plus"></i> Add Member</a>
@@ -41,8 +41,8 @@
                             </form>
                     </tr>
                 @endforeach
-
             </tbody>
         </table>
     </section>
+    {{ $members->links() }}
 @endsection
