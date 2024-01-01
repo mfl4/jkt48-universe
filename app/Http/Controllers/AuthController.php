@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
-    public function signin()
+    public function signup()
     {
-        return view('pages.auth.signin');
+        return view('pages.auth.signup');
     }
 }
