@@ -20,29 +20,25 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
+// Home
 Route::get('/', function () {
     return view('pages.home');
 });
 
-Route::get('/members', function () {
-    return view('pages.members');
-});
-
+// Members
 Route::get('/members', [MemberController::class, 'index']);
-
 Route::get('/members/{post:id}', [MemberController::class, 'show']);
 
-Route::get('/signin', [AuthController::class, 'signin'])->name('signin')->middleware('guest');
-Route::post('/signin', [AuthController::class, 'authenticate']);
-Route::post('/signout', [AuthController::class, 'signout']);
-
-Route::get('/signup', [AuthController::class, 'signup'])->name('signup')->middleware('guest');
-Route::post('/signup', [AuthController::class, 'store']);
-
-Route::get('/signin', function () {
-    return view('pages.auth.signin');
+// Authentication
+Route::group(['prefix' => 'auth', 'middleware' => ['auth']], function () {
+    Route::get('/signup', [AuthController::class, 'signup'])->name('signup')->middleware('guest');
+    Route::post('/signup', [AuthController::class, 'store']);
+    Route::get('/signin', [AuthController::class, 'signin'])->name('signin')->middleware('guest');
+    Route::post('/signin', [AuthController::class, 'authenticate']);
+    Route::post('/signout', [AuthController::class, 'signout']);
 });
 
+// Dashboard
 Route::get('/dashboard', function () {
     return view('pages.dashboard.index', [
         'title' => 'Dashboard',
