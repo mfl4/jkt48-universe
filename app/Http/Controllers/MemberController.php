@@ -9,11 +9,15 @@ class MemberController extends Controller
 {
     public function index()
     {
-
+        return view('pages.members', [
+            'members' => Member::all(),
+        ]);
     }
 
     public function show(Member $member)
     {
-
+        return view('pages.member', [
+            'member' => $member,
+        ]);
     }
 }
