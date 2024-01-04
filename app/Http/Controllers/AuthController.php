@@ -27,4 +27,33 @@ class AuthController extends Controller
         User::create($validatedData);
         return redirect()->route('auth.signin')->with('success', 'You have successfully signed up, please sign in!');
     }
+
+    public function signin()
+    {
+        return view('pages.auth.signin');
+    }
+
+    public function authenticate()
+    {
+        $credentials = request()->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        if (auth()->attempt($credentials)) {
+            request()->session()->regenerate();
+            return redirect()->route('dashboard');
+        }
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    public function signout()
+    {
+        auth()->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect()->route('auth.signin');
+    }
 }
