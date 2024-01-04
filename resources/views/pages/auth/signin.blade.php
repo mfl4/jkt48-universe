@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('layout')
-    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <section class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 
         @if (session()->has('success'))
             <div class="bg-green-100 border border-green-400 text-green-600 px-4 py-3 rounded relative" role="alert">
@@ -16,13 +16,13 @@
             </div>
         @endif
 
-        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <section class="sm:mx-auto sm:w-full sm:max-w-sm" data-aos="fade-down" data-aos-delay="50">
             <img class="mx-auto w-1/5" src="{{ asset('images/jkt48.svg') }}" alt="JKT48 Universe">
             <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-red-900">SIGN IN
             </h2>
-        </div>
+        </section>
 
-        <main class="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+        <section class="mt-5 sm:mx-auto sm:w-full sm:max-w-sm" data-aos="fade-up" data-aos-delay="50">
             <form class="space-y-6" action="{{ route('signin') }}" method="POST">
                 @csrf
                 <section>
@@ -61,6 +61,6 @@
                 Haven't signed up yet?
                 <a href="{{ route('signup') }}" class="font-semibold leading-6 text-red-600 hover:text-red-500">Here</a>
             </p>
-        </main>
-    </div>
+        </section>
+    </section>
 @endsection
