@@ -1,21 +1,6 @@
 @extends('layouts.app')
 @section('layout')
     <section class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-
-        @if (session()->has('success'))
-            <div class="bg-green-100 border border-green-400 text-green-600 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Success!</strong>
-                <span class="block sm:inline">{{ session()->get('success') }}</span>
-            </div>
-        @endif
-
-        @if (session()->has('error'))
-            <div class="bg-red-100 border border-red-400 text-red-600 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Error!</strong>
-                <span class="block sm:inline">{{ session()->get('error') }}</span>
-            </div>
-        @endif
-
         <section class="sm:mx-auto sm:w-full sm:max-w-sm" data-aos="fade-down" data-aos-delay="50">
             <img class="mx-auto w-1/5" src="{{ asset('images/jkt48.svg') }}" alt="JKT48 Universe">
             <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-red-900">SIGN IN
@@ -58,9 +43,24 @@
 
             <p class="mt-10
                         text-center text-sm text-red-500">
-                Haven't signed up yet?
-                <a href="{{ route('signup') }}" class="font-semibold leading-6 text-red-600 hover:text-red-500">Here</a>
+                Haven't registered yet?
+                <a href="{{ route('signup') }}"
+                    class="font-semibold leading-6 text-red-600 hover:text-red-500 animate-pulse">Here</a>
             </p>
+
+            @if (session()->has('success'))
+                <div class="bg-green-100 border border-green-400 text-green-600 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Success!</strong>
+                    <span class="block sm:inline">{{ session()->get('success') }}</span>
+                </div>
+            @endif
+
+            @if (session()->has('error'))
+                <div class="bg-red-100 border border-red-400 text-red-600 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block sm:inline">{{ session()->get('error') }}</span>
+                </div>
+            @endif
         </section>
     </section>
 @endsection

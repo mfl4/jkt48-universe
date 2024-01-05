@@ -25,7 +25,7 @@ class AuthController extends Controller
         $validatedData['password'] = Hash::make($validatedData['password']);
 
         User::create($validatedData);
-        return redirect()->route('auth.signin')->with('success', 'You have successfully signed up, please sign in!');
+        return redirect()->route('signin')->with('success', 'You have successfully signed up, please sign in!');
     }
 
     public function signin()
@@ -42,7 +42,7 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials)) {
             request()->session()->regenerate();
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
@@ -54,6 +54,6 @@ class AuthController extends Controller
         auth()->logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
-        return redirect()->route('auth.signin');
+        return redirect()->route('home');
     }
 }
