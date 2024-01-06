@@ -18,18 +18,17 @@
                             autofocus required
                             class="block w-full rounded-md border-0 py-1.5 px-3 text-red-90-sm ring-1 ring-inset ring-red-300 placeholder:text-red-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6">
                     </section>
+                    @error('email')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </section>
 
                 <section>
                     <section class="flex items-center justify-between">
                         <label for="password" class="block text-sm font-medium leading-6 text-red-900">Password</label>
-                        {{-- <div class="text-sm">
-                            <a href="#" class="font-semibold text-red-600 hover:text-red-500">Forgot
-                                password?</a>
-                        </div> --}}
                     </section>
                     <section class="mt-2">
-                        <input id="password" name="password" type="password" autocomplete="current-password" required
+                        <input id="password" name="password" type="password" required
                             class="block w-full rounded-md border-0 py-1.5 px-3 text-red-900 shadow-sm ring-1 ring-inset ring-red-300 placeholder:text-red-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6">
                     </section>
                 </section>
