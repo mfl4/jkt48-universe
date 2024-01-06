@@ -13,16 +13,13 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->string('name');
             $table->string('nickname');
             $table->string('jikoshoukai');
             $table->integer('generation');
             $table->enum('status', ['Member', 'Trainee', 'Inactive']);
-            $table->date('date_of_birth');
-            $table->enum('zodiac', ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'])->nullable();
-            $table->enum('blood_type', ['A', 'B', 'O', 'AB'])->nullable();
-            $table->integer('height')->nullable();
+            $table->date('birthday');
             $table->timestamps();
         });
     }
