@@ -29,11 +29,11 @@ Route::prefix('members')->group(function () {
 
 // Authentication
 Route::group(['prefix' => 'auth'], function () {
-    Route::get('/signup', [AuthController::class, 'signup'])->name('auth.signup')->middleware('guest');
+    Route::get('/signup', [AuthController::class, 'signup'])->name('signup')->middleware('guest');
     Route::post('/signup', [AuthController::class, 'store']);
-    Route::get('/signin', [AuthController::class, 'signin'])->name('auth.signin')->middleware('guest');
+    Route::get('/signin', [AuthController::class, 'signin'])->name('signin')->middleware('guest');
     Route::post('/signin', [AuthController::class, 'authenticate']);
-    Route::post('/signout', [AuthController::class, 'signout']);
+    Route::post('/signout', [AuthController::class, 'signout'])->name('signout')->middleware('auth');
 });
 
 // Dashboard
@@ -43,6 +43,6 @@ Route::get('/dashboard', function () {
         'users' => \App\Models\User::all()->count(),
         'members' => \App\Models\Member::all()->count(),
     ]);
-})->middleware('auth')->name('dashboard.index');
+})->name('dashboard')->middleware('isAdmin');
 
-Route::resource('/dashboard/members', DashboardMemberController::class);
+Route::resource('/dashboard/members', DashboardMemberController::class)->middleware('isAdmin');
