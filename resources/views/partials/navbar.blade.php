@@ -4,15 +4,15 @@
         <ul class="flex gap-5">
             <li>
                 <a href="{{ Route('home') }}"
-                    class="rounded  p-2 transition-all duration-300 hover:bg-white hover:text-red-600 hover:font-bold {{ request()->is('/') ? 'text-red-700 font-extrabold rounded bg-white' : 'text-white' }}">Home</a>
+                    class="rounded p-2 transition-all duration-300 hover:text-white hover:bg-red-600 hover:font-bold
+                    {{ request()->is('/') ? 'text-red-700 font-extrabold rounded bg-white' : 'text-white' }}"><i
+                        class="fa-solid fa-house"></i> Home</a>
             </li>
             <li>
                 <a href="{{ Route('members') }}"
-                    class="rounded  p-2 transition-all duration-300 hover:bg-white hover:text-red-600 hover:font-bold {{ request()->is('members*') ? 'text-red-700 font-extrabold rounded bg-white' : 'text-white' }}">Members</a>
-            </li>
-            <li>
-                <a href="{{ Route('dashboard') }}"
-                    class="rounded  p-2 transition-all duration-300 hover:bg-white hover:text-red-600 hover:font-bold {{ request()->is('dashboard*') ? 'text-red-700 font-extrabold rounded bg-white' : 'text-white' }}">Dashboard</a>
+                    class="rounded p-2 transition-all duration-300 hover:text-white hover:bg-red-600 hover:font-bold
+                    {{ request()->is('members*') ? 'text-red-700 font-extrabold rounded bg-white' : 'text-white' }}"><i
+                        class="fa-solid fa-star"></i> Members</a>
             </li>
         </ul>
     </section>
@@ -22,13 +22,29 @@
     </section>
 
     <section>
-        <ul>
+        <ul class="cursor-pointer flex gap-5">
             @auth
                 <li>
-                    <a class="rounded font-semibold bg-white text-red-700 p-2 transition-all duration-300" href="/"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Welcome, {{ auth()->user()->name }}
+                    <a class="rounded font-semibold bg-white text-red-700 p-2 transition-all duration-300"
+                        onclick="handleDropdown()" id="dropdown-toggle"><i class="fa-solid fa-circle-user"></i>
+                        Welcome, {{ auth()->user()->username }}
+                        <i class="fa-solid fa-caret-down"></i>
                     </a>
+                    <ul class="absolute rounded mt-2 p-4 border-red-700 border text-red-700 bg-white hidden"
+                        id="dropdown-menu">
+                        @can('isAdmin')
+                            <li><a class="rounded px-4 py-3 transition-all duration-300 hover:text-white hover:bg-red-600"
+                                    href="{{ Route('dashboard') }}"><i class="fa-solid fa-bars-progress"></i> Dashboard</a></li>
+                            <hr class="my-2 border-red-700">
+                        @endcan
+                        <li class="rounded px-4 py-3 transition-all duration-300 hover:text-white hover:bg-red-600">
+                            <form action="{{ route('signout') }}" method="POST">
+                                @csrf
+                                <button type="submit"><i class="fa-solid fa-right-from-bracket"></i>
+                                    Sign Out</button>
+                            </form>
+                        </li>
+                    </ul>
                 </li>
             @else
                 <li>
@@ -39,5 +55,26 @@
             @endauth
         </ul>
     </section>
-
 </nav>
+<script>
+    const handleDropdown = () => {
+        const dropdownToggle = document.querySelector('#dropdown-toggle');
+        const dropdownMenu = document.querySelector('#dropdown-menu');
+
+        if (dropdownMenu.classList.contains('hidden')) {
+            dropdownMenu.classList.remove('hidden');
+            dropdownToggle.classList.remove('text-red-700');
+            dropdownToggle.classList.remove('bg-white');
+            dropdownToggle.classList.add('bg-red-900');
+            dropdownToggle.classList.add('text-white');
+
+        } else {
+            dropdownMenu.classList.add('hidden');
+            dropdownToggle.classList.remove('bg-red-900');
+            dropdownToggle.classList.remove('text-white');
+            dropdownToggle.classList.add('bg-white');
+            dropdownToggle.classList.add('text-red-700');
+        }
+
+    }
+</script>
