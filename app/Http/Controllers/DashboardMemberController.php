@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardMemberController extends Controller
 {
@@ -13,8 +14,8 @@ class DashboardMemberController extends Controller
      */
     public function index()
     {
+        $this->authorize('isAdmin');
         return view('pages.dashboard.member.index', [
-            // 'members' => Member::all()->paginate(10),
             'members' => Member::paginate(10)->withQueryString(),
         ]);
     }
@@ -32,7 +33,23 @@ class DashboardMemberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'photo' => 'image|mimes:jpeg,png,jpg|max:1024',
+            'name' => 'required|max:255',
+            'nickname' => 'required|max:255',
+            'jikoshoukai' => 'required|max:255',
+            'generation' => 'required|numeric|in:1,2,3,4,5,6,7,8,9,10,11,12',
+            'status' => 'required|in:Member,Trainee,Inactive',
+            'birthday' => 'required|date',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $validatedData['photo'] = $request->file('photo')->store('members');
+        }
+
+        Member::create($validatedData);
+
+        return redirect("dashboard/members")->with('success', 'Member created successfully!');
     }
 
     /**
@@ -40,7 +57,9 @@ class DashboardMemberController extends Controller
      */
     public function show(Member $member)
     {
-        //
+        return view('pages.dashboard.member.show', [
+            'member' => $member,
+        ]);
     }
 
     /**
@@ -48,7 +67,9 @@ class DashboardMemberController extends Controller
      */
     public function edit(Member $member)
     {
-        //
+        return view('pages.dashboard.member.edit', [
+            'member' => $member,
+        ]);
     }
 
     /**
@@ -56,7 +77,28 @@ class DashboardMemberController extends Controller
      */
     public function update(Request $request, Member $member)
     {
-        //
+        $rules = [
+            'photo' => 'image|mimes:jpeg,png,jpg|max:1024',
+            'name' => 'required|max:255',
+            'nickname' => 'required|max:255',
+            'jikoshoukai' => 'required|max:255',
+            'generation' => 'required|numeric|in:1,2,3,4,5,6,7,8,9,10,11,12',
+            'status' => 'required|in:Member,Trainee,Inactive',
+            'birthday' => 'required|date',
+        ];
+
+        $validatedData = $request->validate($rules);
+
+        if ($request->hasFile('photo')) {
+            if ($request->oldPhoto) {
+                Storage::delete($request->oldPhoto);
+            }
+            $validatedData['photo'] = $request->file('photo')->store('members');
+        }
+
+        $member->where('id', $member->id)->update($validatedData);
+
+        return redirect("dashboard/members")->with('success', 'Member updated successfully!');
     }
 
     /**
@@ -64,6 +106,11 @@ class DashboardMemberController extends Controller
      */
     public function destroy(Member $member)
     {
-        //
+        if ($member->photo) {
+            Storage::delete($member->photo);
+        }
+        $member->delete();
+
+        return redirect("dashboard/members")->with('success', 'Member deleted successfully!');
     }
 }
