@@ -23,8 +23,8 @@ Route::get('/', function () {
 
 // Members
 Route::prefix('members')->group(function () {
-    Route::get('/', [MemberController::class, 'index'])->name('members');
-    Route::get('/{member:id}', [MemberController::class, 'show'])->name('member');
+    Route::get('/', [MemberController::class, 'index'])->name('members')->middleware('auth');
+    Route::get('/{member:id}', [MemberController::class, 'show'])->name('member')->middleware('auth');
 });
 
 // Authentication
